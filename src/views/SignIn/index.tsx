@@ -1,37 +1,34 @@
 "use client";
 import React, { useState } from "react";
-import { signUpUser } from "@/apiHelper/signUp";
 import { useRouter } from "next/navigation";
+import { signInUser } from "@/apiHelper/signIn";
 import Link from "next/link";
 
-const SignUP = () => {
+const SignIn = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const router = useRouter()
-  const handleSignUp = async () => {
+  const handleSignIn = async () => {
     try {
       const params = { username, password };
-      const response = await signUpUser(params)
-      console.log("Sign-up response:", response);
+      const response = await signInUser(params)
+      console.log("Sign-in response:", response);
 
       if(response?.data?.success === true){
-        router.push("/sign-in")
+        router.push("/")
       }
-        setError(response?.data?.message || "sign up failed")
-      
+        setError(response?.data?.message || "Sign-in failed. Please try again.");
       
     } catch (error) {
-      setError("Sign-up failed. Please try again.");
-      console.error("Sign-up error:", error);
+      setError("Sign-in failed. Please try again.");
+      console.error("Sign-in error:", error);
     }
   };
 
- 
-
   return (
     <div className="bg-black w-full flex flex-col items-center p-4 text-black">
-      <h2 className="text-white mb-4">Sign Up</h2>
+      <h2 className="text-white mb-4">Sign In</h2>
       {error && <p className="text-red-500">{error}</p>}
       <div className="flex flex-col gap-2 w-full max-w-xs">
         <input
@@ -52,17 +49,17 @@ const SignUP = () => {
         />
       </div>
       <button
-        onClick={handleSignUp}
+        onClick={handleSignIn}
         className="mt-4 p-2 bg-blue-500 text-white rounded"
       >
-        Sign Up
+        Sign In
       </button>
-      <div className="text-white flex gap-2">
+       <div className="text-white flex gap-2">
         <p>If already have an account </p>
-        <Link href={"/sign-in"} className="text-blue-500" >Sign In</Link>
+        <Link href={"/sign-up"} className="text-blue-500" >Sign Up</Link>
       </div>
     </div>
   );
 };
 
-export default SignUP;
+export default SignIn;

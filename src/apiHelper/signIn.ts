@@ -2,25 +2,19 @@
 import { IUser } from '@/types';
 import axios from 'axios';
 
-
-
 interface userResponse{
   success:boolean,
   message:string,
 }
 
-export async function signUpUser(
+export async function signInUser(
   params: IUser
 ): Promise<{ data?: userResponse; error: string | null } | undefined> {
   try {
-    const response = await axios.post(
+    const response = await axios.get(
       `${process.env.NEXT_PUBLIC_URL}/api/user`,
-      params,
-      {
-        headers: {
-          'x-api-key': process.env.API_KEY,
-        },
-      }
+      {params},
+      
     );
 
     if (response.status === 200) {

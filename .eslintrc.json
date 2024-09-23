@@ -1,3 +1,8 @@
 {
-  "extends": ["next/core-web-vitals", "next/typescript"]
+  "extends": ["next/core-web-vitals", "next/typescript"],
+   "rules": {
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-namespace": "off", // If you want to keep namespaces
+    "@typescript-eslint/ban-ts-comment": "off" // If you prefer not to switch to @ts-expect-error
+  }
 }

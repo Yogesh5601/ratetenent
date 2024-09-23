@@ -1,10 +1,10 @@
 import { model, models } from "mongoose";
-import { userSignUpSchema } from "./SignUp";
+import { userSchema } from "./User";
 
 // export const UserSignUp = models.UserSingUp || model("userSignUp" , userSignUpSchema)
-const UserSignUp =
-  models.UserSignUp ||
-  model('UserSignUp', userSignUpSchema);
+const User =
+  models.User ||
+  model('User', userSchema);
 
 
-  export {UserSignUp}
+  export {User}

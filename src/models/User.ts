@@ -1,6 +1,6 @@
 import { Schema } from "mongoose";
 
-export const userSignUpSchema = new Schema({
+export const userSchema = new Schema({
     username: {
         type:String,
         unique:true,
