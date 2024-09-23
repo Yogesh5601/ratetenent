@@ -1,19 +1,102 @@
-import type { Config } from "tailwindcss";
+const customColors = {
+  primary: {
+    DEFAULT: '#04020f',
+    dark: '#1f1d3e',
+  },
+  secondary: {
+    DEFAULT: '#0A041D',
+    dark: '#a8a4a4',
+  },
+  accent: {
+    DEFAULT: '#9102F0',
+  },
+  accent_dark: '#3d0263',
+  light_gray: '#84848a',
+  black: '#0c0d0c',
+  bitcoin: '#eab308',
+  bitcoin_v2: '#FFA800',
+  dark_gray: '#A6A6A6',
+  violet: '#0B071E',
+  dark_violet_700: '#0c082a',
+  dark_violet_600: '#161232',
+  highlight: '#14121B',
+  text_grey: '#716D81',
+  light_grey: '#201E27',
+  light_brown: '#37353D',
+  dark_activity: '#211F28',
+  dark_activity_bg: '#0c082a',
+  light_purple: '#9102F099',
+  deep_blue: '#270146',
+};
 
-const config: Config = {
-  content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
-  ],
+module.exports = {
+  mode: 'jit',
+  content: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
+  darkMode: false,
   theme: {
+    fontFamily: {
+      sans: ['"Facebook Sans"', 'sans-serif'],
+    },
     extend: {
-      colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+      colors: customColors,
+      height: {
+        'vh-10': '10vh',
+        'vh-20': '20vh',
+        'vh-30': '30vh',
+        'vh-40': '40vh',
+        'vh-50': '50vh',
+        'vh-60': '60vh',
+        'vh-70': '70vh',
+        'vh-80': '80vh',
+        'vh-90': '90vh',
+        'vh-100': '100vh',
+        'vh-110': '110vh',
+        'vh-120': '120vh',
+        'vh-130': '130vh',
+        'vh-140': '140vh',
+        'vh-150': '150vh',
+        'vh-175': '175vh',
+      },
+      screens: {
+        xs: '450px',
+        '3xl': '2048px',
+      },
+      fontSize: {
+        '2xs': ['0.625rem', '0.75rem'],
+      },
+      zIndex: {
+        1: '1',
+        2: '2',
+        3: '3',
+        4: '4',
+      },
+      backgroundOpacity: {
+        6: '0.06',
+        8: '0.08',
+        15: '0.15',
+        35: '0.35',
+        45: '0.45',
+        55: '0.55',
+        65: '0.65',
+        85: '0.85',
+      },
+      borderOpacity: {
+        6: '0.06',
+        8: '0.08',
+        15: '0.15',
+        35: '0.35',
+        45: '0.45',
+        55: '0.55',
+        65: '0.65',
+        85: '0.85',
+      },
+      backdropBlur: {
+        6: '6px',
       },
     },
   },
+  variants: {
+    extend: {},
+  },
   plugins: [],
 };
-export default config;
