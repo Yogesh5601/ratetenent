@@ -19,10 +19,13 @@ export async function POST(req: NextRequest) {
         message: "Username and password are required",
       });
     }
-
-    const checkuser = await User.findOne({username})
-    if(checkuser){
-      return NextResponse.json({success:false, message:"user alredy exist"})
+    await dbConnect();
+    const checkuser = await User.findOne({ username });
+    if (checkuser) {
+      return NextResponse.json({
+        success: false,
+        message: "user alredy exist",
+      });
     }
 
     // Hash the password
@@ -33,11 +36,11 @@ export async function POST(req: NextRequest) {
       password: hashPassword,
     };
 
-    console.log({userDetail})
+    console.log({ userDetail });
 
     // Here you would typically save the user to your database
-   await dbConnect()
-    const result = await User.create(userDetail)
+    await dbConnect();
+    const result = await User.create(userDetail);
 
     // Generate a JWT token
     // const token = jwt.sign({ username }, JWT_SECRET, { expiresIn: '1h' });
@@ -45,7 +48,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({
       success: true,
       message: "Sign up success",
-      result
+      result,
     });
   } catch (error: any) {
     console.log(error);
@@ -56,47 +59,58 @@ export async function POST(req: NextRequest) {
   }
 }
 
+export async function GET(req: NextRequest) {
+  console.log("**********USER SIGNIN API CALLED***************");
+  try {
+    const username = req.nextUrl.searchParams.get("username");
+    const password = req.nextUrl.searchParams.get("password");
 
-
-export async function GET(req:NextRequest){
-    console.log("**********USER SIGNIN API CALLED***************")
-    try {
-        const username = req.nextUrl.searchParams.get("username")
-         const password = req.nextUrl.searchParams.get("password")
-
-        if(!username ){
-            return NextResponse.json({success:false, message:"username and password required"})
-        }
-          if(!password ){
-            return NextResponse.json({success:false, message:"username and password required"})
-        }
-        console.log({username, password})
-        await dbConnect()
-        const user = await User.findOne({username})
-        console.log({user})
-        if(!user){
-         return NextResponse.json({message:"no user find or invalid user"})
-        }
-
-         const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) {
-         return NextResponse.json({ message: "invalid password" });
-        }
-         const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: "1m" });
-
-        const res = NextResponse.json({ success: true, message: "User signed in successfully" });
-
-        // Set the token in a cookie
-        res.cookies.set("token", token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production", // Set to true in production
-            path: '/',
-            // maxAge: 60, // 24 hours
-        });
-
-        return res;
-
-    } catch (error:any) {
-       return NextResponse.json({success:false, message: error.message || "sign in failed (invalid credentials) "}) 
+    if (!username) {
+      return NextResponse.json({
+        success: false,
+        message: "username and password required",
+      });
     }
+    if (!password) {
+      return NextResponse.json({
+        success: false,
+        message: "username and password required",
+      });
+    }
+    console.log({ username, password });
+    await dbConnect();
+    const user = await User.findOne({ username });
+    console.log({ user });
+    if (!user) {
+      return NextResponse.json({ message: "no user find or invalid user" });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return NextResponse.json({ message: "invalid password" });
+    }
+    const token = jwt.sign({ userId: user._id }, JWT_SECRET, {
+      expiresIn: "1m",
+    });
+
+    const res = NextResponse.json({
+      success: true,
+      message: "User signed in successfully",
+    });
+
+    // Set the token in a cookie
+    res.cookies.set("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production", // Set to true in production
+      path: "/",
+      // maxAge: 60, // 24 hours
+    });
+
+    return res;
+  } catch (error: any) {
+    return NextResponse.json({
+      success: false,
+      message: error.message || "sign in failed (invalid credentials) ",
+    });
+  }
 }

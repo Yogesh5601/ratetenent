@@ -8,18 +8,24 @@ const SignIn = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const router = useRouter()
+  const router = useRouter();
+
   const handleSignIn = async () => {
     try {
       const params = { username, password };
-      const response = await signInUser(params)
+      const response = await signInUser(params);
       console.log("Sign-in response:", response);
 
-      if(response?.data?.success === true){
-        router.push("/")
+      if (response?.data?.success === true) {
+        // Save the username in localStorage
+        localStorage.setItem("username", username);
+        // Redirect to the home page
+        router.push("/");
+      } else {
+        setError(
+          response?.data?.message || "Sign-in failed. Please try again."
+        );
       }
-        setError(response?.data?.message || "Sign-in failed. Please try again.");
-      
     } catch (error) {
       setError("Sign-in failed. Please try again.");
       console.error("Sign-in error:", error);
@@ -37,7 +43,7 @@ const SignIn = () => {
           className="p-2 border border-gray-300 rounded outline-none"
           required
           value={username}
-          onChange={e => setUsername(e.target.value)}
+          onChange={(e) => setUsername(e.target.value)}
         />
         <input
           type="password"
@@ -45,7 +51,7 @@ const SignIn = () => {
           className="p-2 border border-gray-300 rounded outline-none"
           required
           value={password}
-          onChange={e => setPassword(e.target.value)}
+          onChange={(e) => setPassword(e.target.value)}
         />
       </div>
       <button
@@ -54,9 +60,11 @@ const SignIn = () => {
       >
         Sign In
       </button>
-       <div className="text-white flex gap-2">
-        <p>If already have an account </p>
-        <Link href={"/sign-up"} className="text-blue-500" >Sign Up</Link>
+      <div className="text-white flex gap-2">
+        <p>If you already have an account </p>
+        <Link href="/sign-up" className="text-blue-500">
+          Sign Up
+        </Link>
       </div>
     </div>
   );
