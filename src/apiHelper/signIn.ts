@@ -11,8 +11,9 @@ export async function signInUser(
   params: IUser
 ): Promise<{ data?: userResponse; error: string | null } | undefined> {
   try {
-    const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_URL}/api/user`,
+    console.log({params})
+    const response = await axios.post(
+      `${process.env.NEXT_PUBLIC_URL}/api/user/user-signin`,
       {params},
       
     );

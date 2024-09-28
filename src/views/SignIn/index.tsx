@@ -8,27 +8,36 @@ const SignIn = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false); // Loading state
   const router = useRouter();
 
   const handleSignIn = async () => {
+    setError(""); // Clear previous errors
+
+    // Form validation
+    if (!username || !password) {
+      setError("Username and password are required");
+      return;
+    }
+
+    setLoading(true);
     try {
       const params = { username, password };
       const response = await signInUser(params);
+
       console.log("Sign-in response:", response);
 
       if (response?.data?.success === true) {
-        // Save the username in localStorage
         localStorage.setItem("username", username);
-        // Redirect to the home page
-        router.push("/");
+        router.push("/"); // Redirect to the home page
       } else {
-        setError(
-          response?.data?.message || "Sign-in failed. Please try again."
-        );
+        setError(response?.data?.message || "Sign-in failed. Please try again.");
       }
     } catch (error) {
       setError("Sign-in failed. Please try again.");
       console.error("Sign-in error:", error);
+    } finally {
+      setLoading(false); // Reset loading state
     }
   };
 
@@ -57,11 +66,12 @@ const SignIn = () => {
       <button
         onClick={handleSignIn}
         className="mt-4 p-2 bg-blue-500 text-white rounded"
+        disabled={loading} // Disable button when loading
       >
-        Sign In
+        {loading ? "Signing In..." : "Sign In"} {/* Show loading text */}
       </button>
       <div className="text-white flex gap-2">
-        <p>If you already have an account </p>
+        <p>Don't have an account?</p>
         <Link href="/sign-up" className="text-blue-500">
           Sign Up
         </Link>
